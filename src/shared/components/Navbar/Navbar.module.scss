@@ -1,0 +1,24 @@
+.navbar {
+    display: flex;
+    padding: 15px;
+    align-items: center;
+}
+
+.list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 5px;
+}
+
+.link {
+    margin: 0 5px;
+    text-decoration: none;
+    color: black;
+}
+
+.activeLink {
+    margin: 0 5px;
+    color: aqua;
+    text-decoration: none;
+}
