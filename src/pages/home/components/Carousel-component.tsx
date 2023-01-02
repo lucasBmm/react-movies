@@ -1,27 +1,18 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
 import Carousel from 'react-multi-carousel';
 import { CardComponent } from '../../../shared/components/Card/Card';
 import "semantic-ui-css/semantic.min.css";
 import "react-multi-carousel/lib/styles.css";
 import { useAppSelector } from '../../../app/hooks';
 import { configSelector } from '../../../features/defaultConfig';
-import { api } from '../../../App';
-import { country } from '../../../moviedb';
 import { MovieResult } from 'moviedb-promise';
 
 interface Props {
-  elements: any[]
+  movies: MovieResult[]
 }
 
-export function CarouselComponent({ elements }: Props) {
+export function CarouselComponent({ movies }: Props) {
   const configState = useAppSelector(configSelector);
-  const [ movies, setMovies ] = useState<MovieResult[]>([]);
-
-  useEffect(() => {
-    api.movieNowPlaying({ language: 'pt-BR', region: country.Brazil }).then(res => {
-      if (res.results) setMovies(res.results);
-    });
-  }, []);
 
   const responsive = {
       superLargeDesktop: {
