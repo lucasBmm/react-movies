@@ -5,6 +5,9 @@ import "semantic-ui-css/semantic.min.css";
 import "react-multi-carousel/lib/styles.css";
 import { useAppSelector } from '../../../app/hooks';
 import { configSelector } from '../../../features/defaultConfig';
+import { api } from '../../../App';
+import { country } from '../../../moviedb';
+import { MovieResult } from 'moviedb-promise';
 
 interface Props {
   elements: any[]
@@ -12,10 +15,16 @@ interface Props {
 
 export function CarouselComponent({ elements }: Props) {
   const configState = useAppSelector(configSelector);
+  const [ movies, setMovies ] = useState<MovieResult[]>([]);
+
+  useEffect(() => {
+    api.movieNowPlaying({ language: 'pt-BR', region: country.Brazil }).then(res => {
+      if (res.results) setMovies(res.results);
+    });
+  }, []);
 
   const responsive = {
       superLargeDesktop: {
-        // the naming can be any, depends on you.
         breakpoint: { max: 4000, min: 3000 },
         items: 5
       },
@@ -40,7 +49,7 @@ export function CarouselComponent({ elements }: Props) {
       responsive={responsive}
       centerMode
     >
-      {elements.map(movie => {
+      {movies.map(movie => {
         return (
           <>
             <CardComponent src={`${configState?.images.base_url}w500${movie.poster_path}`} date={movie.release_date!} name={movie.title!} id={movie.id!} />

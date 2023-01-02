@@ -6,6 +6,7 @@ import { country } from "../../moviedb";
 export function Home(): JSX.Element {
     return (
         <Layout>
+          <h1>Now playing!</h1>
           <CarouselComponent elements={[]} />
         </Layout>
     );

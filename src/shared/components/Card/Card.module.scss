@@ -1,18 +1,18 @@
 .card_container {
-    width: 150px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    margin: 0 10px;
+    padding: 10px 0;
+    border-radius: 5px;
+
+    img {
+        width: 95%;
+        border-radius: 5px;
+        max-height: 380px;
+    }
 }
 
 .image {
-    max-height: 500px;
     &:hover {
-        transform: scale(1.2);
+        transform: scale(1.05);
     }
 }
 .image_container {
