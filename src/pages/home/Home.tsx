@@ -4,12 +4,13 @@ import { CarouselComponent } from "./components/Carousel-component";
 import { country } from "../../moviedb";
 import { MovieResult } from "moviedb-promise";
 import { api } from "../../App";
+import { getUserLanguage } from "../../shared/utils/tests/functions/user-related";
 
 export function Home(): JSX.Element {
   const [ movies, setMovies ] = useState<MovieResult[]>([]);
 
   useEffect(() => {
-    api.movieNowPlaying({ language: 'pt-BR', region: country.Brazil }).then(res => {
+    api.movieNowPlaying({ language: getUserLanguage(), region: country.Brazil }).then(res => {
       if (res.results) setMovies(res.results);
     });
   }, []);
