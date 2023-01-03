@@ -27,7 +27,7 @@ export function Navbar() {
                 {navbarLinks.map((link, i) => (
                     <li key={i}>
                         <NavLink 
-                            to={link.url} 
+                            to={'/' + link.url} 
                             className={({ isActive }) => isActive ? style.activeLink : style.link}
                         > {link.name} 
                         </NavLink>

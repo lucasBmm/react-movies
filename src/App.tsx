@@ -5,6 +5,7 @@ import { MovieDb } from './moviedb';
 import { useAppDispatch, useAppSelector } from './app/hooks'; 
 import { addConfig, configSelector } from './features/defaultConfig';
 import { MovieSlug } from './pages/movieSlug/MovieSlug';
+import './App.css'
 
 export const api = new MovieDb(process.env.REACT_APP_API_ACCESS_TOKEN || '');
 

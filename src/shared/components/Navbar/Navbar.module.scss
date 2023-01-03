@@ -2,6 +2,14 @@
     display: flex;
     padding: 15px;
     align-items: center;
+    background-color: black;
+    opacity: 0.9;
+    color: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+    height: 10%;
 }
 
 .list {
@@ -14,7 +22,12 @@
 .link {
     margin: 0 5px;
     text-decoration: none;
-    color: black;
+    color: #FFDB00;
+    font-weight: 600;
+
+    &:hover {
+        color: #FFA400;
+    }
 }
 
 .activeLink {
