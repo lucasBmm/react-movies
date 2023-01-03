@@ -7,18 +7,34 @@ import { api } from "../../App";
 import { getUserLanguage } from "../../shared/utils/tests/functions/user-related";
 
 export function Home(): JSX.Element {
-  const [ movies, setMovies ] = useState<MovieResult[]>([]);
+  const [ nowPlayingmovies, setNowPlayingMovies ] = useState<MovieResult[]>([]);
+  const [ moviesPopular, setMoviesPopular ] = useState<MovieResult[]>([]);
+
+  const getMoviesPlaying = (): void => {
+    api.movieNowPlaying({ language: getUserLanguage(), region: country.Brazil }).then(res => {
+      if (res.results) setNowPlayingMovies(res.results);
+    });
+  }
+
+  const getPopularMovies = () => {
+    api.moviePopular({ language: getUserLanguage(), region: country.Brazil }).then(res => {
+      if (res.results) setMoviesPopular(res.results);
+    });
+  }
 
   useEffect(() => {
-    api.movieNowPlaying({ language: getUserLanguage(), region: country.Brazil }).then(res => {
-      if (res.results) setMovies(res.results);
-    });
+    Promise.all([
+      getMoviesPlaying(),
+      getPopularMovies()
+    ]);
   }, []);
 
     return (
         <Layout>
           <h1>Now playing!</h1>
-          <CarouselComponent movies={movies} />
+          <CarouselComponent movies={nowPlayingmovies} />
+          <h1>Most Popular</h1>
+          <CarouselComponent movies={moviesPopular} />
         </Layout>
     );
 }
