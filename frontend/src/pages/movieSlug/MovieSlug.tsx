@@ -8,7 +8,7 @@ import { getUserLanguage } from "../../shared/utils/tests/functions/user-related
 import styles from './MovieSlug.module.scss';
 import { useAppSelector } from "../../app/hooks";
 import { configSelector } from "../../features/defaultConfig";
-import { Label, Rating } from "semantic-ui-react";
+import { Label, Rating, Statistic } from "semantic-ui-react";
 
 export function MovieSlug() {
     const [ movieInfo, setMovieInfo ] = useState<MovieResponse>({});
@@ -44,13 +44,21 @@ export function MovieSlug() {
                                         </Label>
                                     ))}
                                 </div>
-                                <div className="votes" style={{ display: 'flex', marginTop: '10px' }}>
-                                    <p>Votos: </p>
-                                    <Rating maxRating={5} defaultRating={4} icon='star' size='large' />
+                                <div className={styles.vote}>
+                                    <div className={styles.vote_average}>
+                                        <label><strong>Avaliação: </strong></label>
+                                        <p>{ movieInfo.vote_average?.toFixed(1) }</p>
+                                    </div>
+                                    
+                                    <div className={styles.vote_count}>
+                                        <p>{ movieInfo.vote_count }</p>
+                                        <label className={styles.vote_label}>Votos</label>
+                                    </div>
                                 </div>
                             </div>
 
                             <div className={styles.text_content}>
+                                <h3> Sinopse </h3>
                                 <p>{movieInfo.overview}</p>
                             </div>
                     </div>
