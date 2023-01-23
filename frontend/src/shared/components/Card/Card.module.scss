@@ -10,11 +10,24 @@
     }
 }
 
+.content {
+    font-size: 1.2rem;
+    position: absolute;
+    text-shadow: 2px 2px #000;
+    font-weight: bold;
+    width: 80%;
+    color: white;
+    text-decoration: none;
+    left: 6%;
+    bottom: 8%;
+}
+
 .image {
     &:hover {
         transform: scale(1.05);
     }
 }
+
 .image_container {
     max-height: 300px;
     overflow: hidden;

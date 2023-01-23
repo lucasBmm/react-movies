@@ -8,10 +8,11 @@ import { configSelector } from '../../../features/defaultConfig';
 import { MovieResult } from 'moviedb-promise';
 
 interface Props {
-  movies: MovieResult[]
+  movies: MovieResult[],
+  date?: boolean
 }
 
-export function CarouselComponent({ movies }: Props) {
+export function CarouselComponent({ movies, date }: Props) {
   const configState = useAppSelector(configSelector);
 
   const responsive = {
@@ -43,7 +44,7 @@ export function CarouselComponent({ movies }: Props) {
       {movies.map(movie => {
         return (
           <>
-            <CardComponent src={`${configState?.images.base_url}w500${movie.poster_path}`} date={movie.release_date!} name={movie.title!} id={movie.id!} />
+            <CardComponent key={movie.id} src={`${configState?.images.base_url}w500${movie.poster_path}`} date={date ? movie.release_date! : ''} name={movie.title!} id={movie.id!} />
           </>
         );
       })}
