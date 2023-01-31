@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { addConfig, configSelector } from './features/defaultConfig';
 import { MovieSlug } from './pages/movieSlug/MovieSlug';
 import './App.css'
+import { Movies } from './pages/movies/Movies';
 
 export const api = new MovieDb(process.env.REACT_APP_API_ACCESS_TOKEN || '');
 
@@ -32,6 +33,7 @@ function App(): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route index element={<Home />} />
+        <Route element={<Movies />} path='movies/' />
         <Route element={<MovieSlug />} path='movies/:id' />
       </Routes>
     </BrowserRouter>
