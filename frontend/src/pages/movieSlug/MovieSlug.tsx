@@ -9,6 +9,8 @@ import styles from './MovieSlug.module.scss';
 import { useAppSelector } from "../../app/hooks";
 import { configSelector } from "../../features/defaultConfig";
 import { Dimmer, Label, Loader, Rating, Statistic } from "semantic-ui-react";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import 'react-circular-progressbar/dist/styles.css';
 
 export function MovieSlug() {
     const [ movieInfo, setMovieInfo ] = useState<MovieResponse>({});
@@ -19,9 +21,10 @@ export function MovieSlug() {
         if (id) {
             api.movieReviews({ id }).then(res => {
             });
-            api.movieInfo({ id, language: getUserLanguage() }).then(res => {
-                setMovieInfo(res)
+            api.tvInfo({ id, language: getUserLanguage() }).then(res => {
+                setMovieInfo(res as MovieResponse)
             });
+            api.tvPopular().then(res => console.log(res))
         }
     }, [id]);
 
@@ -40,7 +43,25 @@ export function MovieSlug() {
                             <>
                                 <Banner alt={movieInfo.title!} img={movieInfo.backdrop_path!} filter />
                                 <div className={styles.movie_info}>
-                                    <img src={`${configState?.images.base_url}w400${movieInfo.poster_path}`} className={styles.poster_image} />
+                                    <div className={styles.movie_logo_and_ratings}>
+                                        <img src={`${configState?.images.base_url}w400${movieInfo.poster_path}`} className={styles.poster_image} />
+                                        <div className={styles.vote}>
+                                            <CircularProgressbar 
+                                                value={movieInfo.vote_average! * 10} 
+                                                text={`${movieInfo.vote_average! * 10}%`} 
+                                                styles={buildStyles({
+                                                    trailColor: 'transparent',
+                                                    pathColor: "#537542",
+                                                    textColor: 'white',
+                                                    textSize: '1rem'
+                                                })}    
+                                            />
+                                            <div className={styles.vote_count}>
+                                                <p>{ movieInfo.vote_count }</p>
+                                                <label className={styles.vote_label}> Votos </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className={styles.title}>
                                         <h1> {movieInfo.title} </h1>
                                         <div className={styles.genres}>
@@ -51,17 +72,6 @@ export function MovieSlug() {
                                                     </Label>
                                                 ))}
                                             </Label.Group>
-                                        </div>
-                                        <div className={styles.vote}>
-                                            <div className={styles.vote_count}>
-                                                <p>{ movieInfo.vote_average?.toFixed(1) }</p>
-                                                <label className={styles.vote_label}> Avaliação </label>
-                                            </div>
-                                            
-                                            <div className={styles.vote_count}>
-                                                <p>{ movieInfo.vote_count }</p>
-                                                <label className={styles.vote_label}> Votos </label>
-                                            </div>
                                         </div>
                                     </div>
 
