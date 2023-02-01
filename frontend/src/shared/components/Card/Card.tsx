@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 interface Props {
     src:  string,
-    date: Date | string,
+    date?: Date | string,
     name: string,
     id:   number
 };
