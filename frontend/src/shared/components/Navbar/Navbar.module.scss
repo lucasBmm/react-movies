@@ -1,15 +1,19 @@
+@use '../../../variables';
+
 .navbar {
     display: flex;
-    padding: 15px;
+    padding: 20px;
     align-items: center;
-    background-color: black;
-    opacity: 0.9;
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
     position: fixed;
-    width: 100%;
-    top: 0;
+    width: 80%;
+    top: 1%;
+    left: 10%;
+    margin: 0 auto;
     z-index: 10;
-    height: 10%;
+    height: 6%;
+    border-radius: 25px;
 }
 
 .list {
@@ -17,21 +21,33 @@
     list-style: none;
     padding: 0;
     margin: 5px;
+    width: 100%;
+    justify-content: space-between;
+
+    li {
+        width: 20%;
+    }
+
+    li:last-child {
+        padding: 0 5%;
+        display: flex;
+        justify-content: space-around;
+    }
 }
 
 .link {
     margin: 0 5px;
     text-decoration: none;
-    color: #FFDB00;
+    color: #FFF;
     font-weight: 600;
 
     &:hover {
-        color: #FFA400;
+        color: black;
     }
 }
 
 .activeLink {
     margin: 0 5px;
-    color: aqua;
+    color: variables.$green;
     text-decoration: none;
 }

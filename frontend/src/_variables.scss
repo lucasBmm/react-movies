@@ -10,8 +10,11 @@
     }
 }
   
-@mixin laptop {
+@mixin desktop {
     @media screen and (max-width: 1200px) {
         @content;
     }
 }
+
+$green: #537542;
+$gray: rgba(16,19,24,255);

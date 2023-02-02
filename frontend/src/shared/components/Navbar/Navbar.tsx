@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import style from './Navbar.module.scss';
+import { Icon } from "semantic-ui-react";
 
 export function Navbar() {
     const navbarLinks = [
@@ -21,7 +22,7 @@ export function Navbar() {
     return (
         <nav className={style.navbar}>
             <div className={style.logo}>
-                <NavLink to={'/'} role='application'><img src="/images/logo.svg" alt="logo image" width={150} /></NavLink>
+                <NavLink to={'/'} role='application'></NavLink>
             </div>
             <ul className={style.list}>
                 {navbarLinks.map((link, i) => (
@@ -33,6 +34,13 @@ export function Navbar() {
                         </NavLink>
                     </li>
                 ))}
+                <li>
+                    <Icon disabled name='bell outline' />
+
+                    <Icon disabled name='search' />
+
+                    <Icon disabled name='user' />
+                </li>
             </ul>
         </nav>
     );
