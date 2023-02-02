@@ -3,7 +3,7 @@ import { Banner } from "../../shared/components/Banner/Banner";
 import { Layout } from "../../shared/components/Layout/Layout";
 import { useEffect, useState } from "react";
 import { api } from "../../App";
-import { MovieResponse, ShowResponse } from "moviedb-promise";
+import { Cast, MovieResponse, ShowResponse } from "moviedb-promise";
 import { getUserLanguage } from "../../shared/utils/tests/functions/user-related";
 import styles from './MovieSlug.module.scss';
 import { useAppSelector } from "../../app/hooks";
@@ -15,6 +15,7 @@ import 'react-circular-progressbar/dist/styles.css';
 export function MovieSlug() {
     // const [ movieInfo, setMovieInfo ] = useState<MovieResponse>({});
     const [ movieInfo, setMovieInfo ] = useState<ShowResponse>({});
+    const [ cast, setCast ] = useState<Cast[]>([]);
     const configState = useAppSelector(configSelector);
     let { id } = useParams();
 
@@ -26,6 +27,7 @@ export function MovieSlug() {
                 setMovieInfo(res)
             });
             api.tvPopular().then(res => console.log(res))
+            api.tvCredits({id, language: getUserLanguage()}).then(res => {if (res.cast) setCast(res.cast)});
         }
     }, [id]);
 
@@ -131,7 +133,9 @@ export function MovieSlug() {
                                 </div>
 
                                 <div className={styles.movie_actors}>
-
+                                    {cast.map(actor => (
+                                        <img src={`${configState?.images.base_url}/w138_and_h175_face${actor.profile_path}`} alt="" />
+                                    ))}
                                 </div>
                                 
                             </div>
