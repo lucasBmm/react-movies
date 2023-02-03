@@ -8,9 +8,12 @@ import { getUserLanguage } from "../../shared/utils/tests/functions/user-related
 import styles from './MovieSlug.module.scss';
 import { useAppSelector } from "../../app/hooks";
 import { configSelector } from "../../features/defaultConfig";
-import { Dimmer, Icon, Label, Loader, Rating, Statistic } from "semantic-ui-react";
+import { Button, Dimmer, Icon, Label, Loader, Rating, Statistic } from "semantic-ui-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
+import { Actor } from "./components/Actor";
+import type { GoogleParameters } from "serpapi";
+import { getJson } from "serpapi";
 
 export function MovieSlug() {
     // const [ movieInfo, setMovieInfo ] = useState<MovieResponse>({});
@@ -29,6 +32,14 @@ export function MovieSlug() {
             api.tvPopular().then(res => console.log(res))
             api.tvCredits({id, language: getUserLanguage()}).then(res => {if (res.cast) setCast(res.cast)});
         }
+
+        const params = {
+            q: "Coffee",
+            api_key: "277af84cbf82007b899084028da742d562ec98a84f8b283ad3626b4004e89474"
+          };
+          
+          // Show result as JSON
+          getJson("google", params).then(response => console.log(response["organic_results"]));
     }, [id]);
 
     return (
@@ -99,7 +110,6 @@ export function MovieSlug() {
                                 <div className={styles.movie_title}>
                                     <h1> { movieInfo.name } </h1>
                                     
-                                    {/* Informações de uma série */}
                                     <div className={styles.serie_information}>
                                         <div className="year">
                                             <p>Ano: {movieInfo.first_air_date?.substring(0, 4)}</p>
@@ -116,11 +126,18 @@ export function MovieSlug() {
 
                                     <div className={styles.buttons_container}>
 
-                                        <button className={styles.watch_button}>Assista Agora</button>
+                                        {/* <button className={styles.watch_button}>Assista Agora</button> */}
+                                        <Button className={styles.watch_button} animated>
+                                            <Button.Content visible>Assista Agora</Button.Content>
+                                            <Button.Content hidden>
+                                                <Icon name='arrow right' />
+                                            </Button.Content>
+                                        </Button>
 
-                                        <button className={styles.rounded_button}> <Icon name="bookmark outline"/> </button>
-
-                                        <button className={styles.rounded_button}> <Icon name="share alternate"/> </button>
+                                        <div className={styles.social_buttons}>
+                                            <button className={styles.rounded_button}> <Icon name="bookmark outline"/> </button>
+                                            <button className={styles.rounded_button}> <Icon name="share alternate"/>  </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -133,8 +150,14 @@ export function MovieSlug() {
                                 </div>
 
                                 <div className={styles.movie_actors}>
+                                    <h3> Elenco </h3>
                                     {cast.map(actor => (
-                                        <img src={`${configState?.images.base_url}/w138_and_h175_face${actor.profile_path}`} alt="" />
+                                        <Actor 
+                                            base_url={configState?.images.base_url!} 
+                                            profile_path={actor.profile_path!} 
+                                            actor_name={actor.name} 
+                                            character_name={actor.character} 
+                                        />
                                     ))}
                                 </div>
                                 

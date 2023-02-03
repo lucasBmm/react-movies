@@ -74,18 +74,41 @@
 
         .serie_information {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
         }
 
         .buttons_container {
             width: 100%;
             margin-top: 5%;
             display: flex;
-            justify-content: space-around;
+
+            .social_buttons {
+                display: flex;
+                justify-content: center;
+                width: 30%;
+                margin-left: 10%;
+
+                .rounded_button {
+                    padding: 5px 12px 5px 16px;
+                    border: 2px solid white;
+                    outline: none;
+                    border-radius: 50%;
+                    text-align: center;
+                    background-color: transparent;
+                    color: white;
+                    margin: 0 5px;
+    
+                    &:hover {
+                        cursor: pointer;
+                        background-color: white;
+                        color: black;
+                        transition: background-color 0.5s ease;
+                    }
+                }
+            }
 
             .watch_button {
-                cursor: pointer;
-                padding: 15px;
+                padding: 15px 20px;
                 background-color: variables.$green;
                 outline: none;
                 border: none;
@@ -93,23 +116,7 @@
                 color: white;
                 font-size: 1.2rem;
                 border-radius: 20px;
-            }
 
-            .rounded_button {
-                padding: 5px 12px 5px 16px;
-                border: 3px solid white;
-                outline: none;
-                border-radius: 50%;
-                text-align: center;
-                background-color: transparent;
-                color: white;
-
-                &:hover {
-                    cursor: pointer;
-                    background-color: white;
-                    color: black;
-                    transition: background-color 0.5s ease;
-                }
             }
         }
     }
