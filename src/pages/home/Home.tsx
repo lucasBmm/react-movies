@@ -50,12 +50,14 @@ export function Home(): JSX.Element {
               </div>
             </Link>
           </div>
-          <h1>Now playing!</h1>
-          <CarouselComponent movies={nowPlayingmovies} />
-          <h1>Most Popular</h1>
-          <CarouselComponent movies={moviesPopular} />
-          <h1>Upcoming</h1>
-          <CarouselComponent movies={upcomingMovies} date/>
+          <div className={styles.carousel_container}>
+            <h1>Now playing!</h1>
+            <CarouselComponent movies={nowPlayingmovies} />
+            <h1>Most Popular</h1>
+            <CarouselComponent movies={moviesPopular} />
+            <h1>Upcoming</h1>
+            <CarouselComponent movies={upcomingMovies} date/>
+          </div>
         </Layout>
     );
 }
