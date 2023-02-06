@@ -1,0 +1,13 @@
+.videos_container {
+    display: flex;
+
+    .selected_video_container {
+        width: 80%;
+        border: 2px solid red;
+    }
+    
+    .other_videos_container {
+        width: 20%;
+        border: 2px solid green;
+    }
+}

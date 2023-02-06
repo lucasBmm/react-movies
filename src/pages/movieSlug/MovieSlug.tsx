@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Banner } from "../../shared/components/Banner/Banner";
 import { Layout } from "../../shared/components/Layout/Layout";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { api } from "../../App";
 import { Cast, Video, ShowResponse, VideosResponse } from "moviedb-promise";
 import { getUserLanguage } from "../../shared/utils/tests/functions/user-related";
@@ -13,6 +13,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
 import { Actor } from "./components/Actor";
 import { TrailerVideo } from "./components/TrailerVideo";
+import { VideoSelector } from "./components/VideoSelector";
 
 export function MovieSlug() {
     // const [ movieInfo, setMovieInfo ] = useState<MovieResponse>({});
@@ -167,7 +168,7 @@ export function MovieSlug() {
 
                             <div className={styles.video_container}>
                                 <h3> Videos </h3>
-                                {}
+                                    <VideoSelector videos={videos} />
                             </div>
                         </>
                     )
