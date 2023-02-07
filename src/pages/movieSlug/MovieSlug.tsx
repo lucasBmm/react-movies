@@ -1,23 +1,24 @@
 import { useParams } from "react-router-dom";
-import { Banner } from "../../shared/components/Banner/Banner";
 import { Layout } from "../../shared/components/Layout/Layout";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../App";
-import { Cast, Video, ShowResponse, VideosResponse } from "moviedb-promise";
+import { Cast, Video, ShowResponse, TvResult } from "moviedb-promise";
 import { getUserLanguage } from "../../shared/utils/tests/functions/user-related";
 import styles from './MovieSlug.module.scss';
 import { useAppSelector } from "../../app/hooks";
 import { configSelector } from "../../features/defaultConfig";
-import { Button, Dimmer, Icon, Label, Loader, Rating, Statistic } from "semantic-ui-react";
+import { Button, Card, Dimmer, Icon, Label, Loader, Rating, Statistic } from "semantic-ui-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
 import { Actor } from "./components/Actor";
-import { TrailerVideo } from "./components/TrailerVideo";
 import { VideoSelector } from "./components/VideoSelector";
+import { CardComponent } from "../../shared/components/Card/Card";
+import Carousel from "react-multi-carousel";
 
 export function MovieSlug() {
     // const [ movieInfo, setMovieInfo ] = useState<MovieResponse>({});
     const [ movieInfo, setMovieInfo ] = useState<ShowResponse>({});
+    const [ similar, setSimilar ] = useState<TvResult[]>();
     const [ videos, setVideos ] = useState<Video[]>();
     const [ cast, setCast ] = useState<Cast[]>([]);
     const configState = useAppSelector(configSelector);
@@ -28,14 +29,32 @@ export function MovieSlug() {
             api.movieReviews({ id }).then(res => {
             });
             api.tvInfo({ id, language: getUserLanguage() }).then(res => {
-                console.log(res)
                 setMovieInfo(res)
             });
-            api.tvPopular().then(res => console.log(res))
             api.tvCredits({id, language: getUserLanguage()}).then(res => {if (res.cast) setCast(res.cast)});
             api.tvVideos({id, language: getUserLanguage()}).then(res => setVideos(res.results));
+            api.tvSimilar({id, language: getUserLanguage()}).then(res => {setSimilar(res.results); console.log(res)})
         }
     }, [id]);
+
+    const responsive = {
+        superLargeDesktop: {
+          breakpoint: { max: 4000, min: 3000 },
+          items: 5
+        },
+        desktop: {
+          breakpoint: { max: 3000, min: 1024 },
+          items: 4
+        },
+        tablet: {
+          breakpoint: { max: 1024, min: 464 },
+          items: 3
+        },
+        mobile: {
+          breakpoint: { max: 464, min: 0 },
+          items: 2
+        }
+    };
 
     return (
         <Layout>
@@ -168,7 +187,24 @@ export function MovieSlug() {
 
                             <div className={styles.video_container}>
                                 <h3> Videos </h3>
-                                    <VideoSelector videos={videos} />
+                                {videos && <VideoSelector videos={videos} />}
+                            </div>
+
+                            <div className={styles.recomended_content}>
+                                <h1>Similar content</h1>
+                                {similar && 
+                                (
+                                    <Carousel  
+                                    deviceType={"desktop"}
+                                    itemClass="image-item"
+                                    responsive={responsive}
+                                    centerMode
+                                    >
+                                    {similar?.map(tv => (
+                                        <CardComponent name={tv.name!} src={`${configState?.images.base_url}w500${tv.backdrop_path}`} id={tv.id!} key={tv.id} />
+                                    ))}
+                                    </Carousel>
+                                )}
                             </div>
                         </>
                     )

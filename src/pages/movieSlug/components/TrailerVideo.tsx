@@ -6,7 +6,7 @@ interface Props {
 
 export function TrailerVideo({ videoId }: Props) {
     return (
-        <div className="ratio ratio-16x9">
+        <div className="ratio ratio-16x9" id='youtube_video'>
             <iframe 
                 src={`https://www.youtube.com/embed/${videoId}`} 
                 title='Video' 
