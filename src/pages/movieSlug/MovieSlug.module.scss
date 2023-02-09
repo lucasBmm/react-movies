@@ -157,6 +157,13 @@
             .movie_actors { 
                 grid-area: 2 / 5 / 6 / 6;
                 margin-top: 30%;
+
+                .cast_see_more {
+                    a, i {
+                        color: variables.$green;
+                    }
+
+                }
             }
         }
     }

@@ -11,6 +11,8 @@ export function VideoSelector({ videos }: Props) {
     const [ selectedVideo, setSelectedVideo ] = useState(videos[0])
     const [ otherVideos, setOtherVideos ] = useState<Video[]>(videos.slice(1));
 
+    console.log(videos)
+
     useEffect(() => {
         setOtherVideos([...videos.filter(video => video.id !== selectedVideo.id)]);
     }, [selectedVideo]);
@@ -19,7 +21,7 @@ export function VideoSelector({ videos }: Props) {
         <div className={styles.videos_container}>
 
             <div className={styles.selected_video_container}>
-                <TrailerVideo videoId={selectedVideo.key} />
+                <TrailerVideo videoId={selectedVideo?.key} />
             </div>
 
             <div className={styles.other_videos_container}>

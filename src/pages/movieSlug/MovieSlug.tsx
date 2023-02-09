@@ -1,13 +1,13 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Layout } from "../../shared/components/Layout/Layout";
 import { useEffect, useState } from "react";
-import { api } from "../../App";
-import { Cast, Video, ShowResponse, TvResult } from "moviedb-promise";
+import { api, responsive } from "../../App";
+import { Cast, Video, ShowResponse, MovieResult, MovieResponse } from "moviedb-promise";
 import { getUserLanguage } from "../../shared/utils/tests/functions/user-related";
 import styles from './MovieSlug.module.scss';
 import { useAppSelector } from "../../app/hooks";
 import { configSelector } from "../../features/defaultConfig";
-import { Button, Card, Dimmer, Icon, Label, Loader, Rating, Statistic } from "semantic-ui-react";
+import { Button, Dimmer, Icon, Loader } from "semantic-ui-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
 import { Actor } from "./components/Actor";
@@ -17,44 +17,31 @@ import Carousel from "react-multi-carousel";
 
 export function MovieSlug() {
     // const [ movieInfo, setMovieInfo ] = useState<MovieResponse>({});
-    const [ movieInfo, setMovieInfo ] = useState<ShowResponse>({});
-    const [ similar, setSimilar ] = useState<TvResult[]>();
-    const [ videos, setVideos ] = useState<Video[]>();
+    const [ movieInfo, setMovieInfo ] = useState<MovieResponse>({});
+    const [ similar, setSimilar ] = useState<MovieResult[]>([]);
+    const [ videos, setVideos ] = useState<Video[]>([]);
     const [ cast, setCast ] = useState<Cast[]>([]);
     const configState = useAppSelector(configSelector);
     let { id } = useParams();
 
     useEffect(() => {
+        setMovieInfo({});
+        setSimilar([]);
+        setVideos([]);
+        setCast([]);
+        
         if (id) {
-            api.movieReviews({ id }).then(res => {
-            });
-            api.tvInfo({ id, language: getUserLanguage() }).then(res => {
+            api.movieReviews({ id }).then(res => { console.log(res) });
+
+            api.movieInfo({ id, language: getUserLanguage() }).then(res => {
                 setMovieInfo(res)
             });
-            api.tvCredits({id, language: getUserLanguage()}).then(res => {if (res.cast) setCast(res.cast)});
-            api.tvVideos({id, language: getUserLanguage()}).then(res => setVideos(res.results));
-            api.tvSimilar({id, language: getUserLanguage()}).then(res => {setSimilar(res.results); console.log(res)})
+
+            api.movieCredits({id, language: getUserLanguage()}).then(res => { if (res.cast)    setCast(res.cast.slice(0, 5))});
+            api.movieVideos({id, language: getUserLanguage()}).then(res =>  { if (res.results) setVideos(res.results)});
+            api.movieSimilar({id, language: getUserLanguage()}).then(res => { if (res.results) setSimilar(res.results)})
         }
     }, [id]);
-
-    const responsive = {
-        superLargeDesktop: {
-          breakpoint: { max: 4000, min: 3000 },
-          items: 5
-        },
-        desktop: {
-          breakpoint: { max: 3000, min: 1024 },
-          items: 4
-        },
-        tablet: {
-          breakpoint: { max: 1024, min: 464 },
-          items: 3
-        },
-        mobile: {
-          breakpoint: { max: 464, min: 0 },
-          items: 2
-        }
-    };
 
     return (
         <Layout>
@@ -122,20 +109,24 @@ export function MovieSlug() {
                                     </div>
 
                                     <div className={styles.movie_title}>
-                                        <h1> { movieInfo.name } </h1>
+                                        <h1> { movieInfo.title } </h1>
                                         
                                         <div className={styles.serie_information}>
-                                            <div className="year">
+                                            {/* <div className="year">
                                                 <p>Ano: {movieInfo.first_air_date?.substring(0, 4)}</p>
+                                            </div> */}
+
+                                            <div className="year">
+                                                <p>Ano: {movieInfo.release_date?.substring(0, 4)}</p>
                                             </div>
 
-                                            <div className="seasons">
+                                            {/* <div className="seasons">
                                                 <p> {movieInfo.number_of_seasons} Temporada</p>
-                                            </div>
+                                            </div> */}
 
-                                            <div className="episodes">
+                                            {/* <div className="episodes">
                                                 <p> {movieInfo.number_of_episodes} Episódios</p>
-                                            </div>
+                                            </div> */}
                                         </div>
 
                                         <div className={styles.buttons_container}>
@@ -180,6 +171,11 @@ export function MovieSlug() {
                                                 character_name={actor.character} 
                                             />
                                         ))}
+                                        {cast.length >= 5 && (
+                                            <div className={styles.cast_see_more}>
+                                                <Link to={'people'}>Ver mais <Icon name="arrow alternate circle right outline"/></Link>
+                                            </div>
+                                        )}
                                     </div>
                                     
                                 </div>
@@ -187,7 +183,7 @@ export function MovieSlug() {
 
                             <div className={styles.video_container}>
                                 <h3> Videos </h3>
-                                {videos && <VideoSelector videos={videos} />}
+                                {videos.length > 1 && <VideoSelector videos={videos} />}
                             </div>
 
                             <div className={styles.recomended_content}>
@@ -200,8 +196,8 @@ export function MovieSlug() {
                                     responsive={responsive}
                                     centerMode
                                     >
-                                    {similar?.map(tv => (
-                                        <CardComponent name={tv.name!} src={`${configState?.images.base_url}w500${tv.backdrop_path}`} id={tv.id!} key={tv.id} />
+                                    {similar?.map(movie => (
+                                        movie.backdrop_path && <CardComponent name={`${movie.title}`} src={`${configState?.images.base_url}w500${movie.backdrop_path}`} id={movie.id!} key={movie.id} />
                                     ))}
                                     </Carousel>
                                 )}

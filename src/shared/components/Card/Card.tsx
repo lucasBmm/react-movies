@@ -17,7 +17,7 @@ export function CardComponent({ src, date, name, id }: Props) {
     }
 
     return (
-        <Link to={'movies/' + id}>
+        <Link to={'/movies/' + id}>
             <div className={styles.card_container}>
                 <Image src={src} wrapped ui={false} className={styles.image} />
                 <Card.Content className={styles.content}>

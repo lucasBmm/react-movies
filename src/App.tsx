@@ -10,6 +10,25 @@ import { Movies } from './pages/movies/Movies';
 
 export const api = new MovieDb(process.env.REACT_APP_API_ACCESS_TOKEN || '');
 
+export const responsive = {
+  superLargeDesktop: {
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 4
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 3
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 2
+  }
+};
+
 function App(): JSX.Element {
   const [ loading, setLoading ] = useState(true);
   const dispatch = useAppDispatch();
